@@ -1,6 +1,7 @@
 Both Visitor and Admin
 
 admin: jcesperanza@neu.edu.ph | Pass: 123456789
+
 user: gmail@neu.edu.ph | Pass: 112233
 
 NEU Library Visitor Management System
