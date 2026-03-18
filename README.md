@@ -1,6 +1,7 @@
 Both Visitor and Admin
 
-User: jcesperanza@neu.edu.ph | Pass: 123456789
+admin: jcesperanza@neu.edu.ph | Pass: 123456789
+user: gmail@neu.edu.ph | Pass: 112233
 
 NEU Library Visitor Management System
 A web-based visitor management system developed for the New Era University Library. It allows students and faculty to conveniently check in 
