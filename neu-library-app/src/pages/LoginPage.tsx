@@ -1,11 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import type { CSSProperties } from "react";
-import { loginWithGoogle } from "../services/authService";
+import { useState } from "react";
+import { loginWithGoogle, loginWithEmailPassword } from "../services/authService";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleGoogleLogin = async () => {
     try {
       const result = await loginWithGoogle();
 
@@ -16,6 +20,22 @@ export default function LoginPage() {
       }
     } catch (error: any) {
       alert(error.message);
+    }
+  };
+
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const result = await loginWithEmailPassword(email, password);
+
+      if (result.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/check-in");
+      }
+    } catch (error: any) {
+      alert(error.message || "Login failed.");
     }
   };
 
@@ -34,11 +54,11 @@ export default function LoginPage() {
 
             <p style={styles.heroText}>
               A secure and simple system for recording, monitoring, and managing
-              library visitors using institutional Google accounts.
+              library visitors using institutional NEU accounts.
             </p>
 
             <div style={styles.featureList}>
-              <div style={styles.featureItem}>Secure NEU Google Login</div>
+              <div style={styles.featureItem}>Secure NEU Account Access</div>
               <div style={styles.featureItem}>Visitor Check-In Logging</div>
               <div style={styles.featureItem}>Admin Dashboard and Reports</div>
               <div style={styles.featureItem}>Block and Unblock Users</div>
@@ -56,15 +76,46 @@ export default function LoginPage() {
 
             <h2 style={styles.cardTitle}>Welcome Back</h2>
             <p style={styles.cardText}>
-              Sign in using your official NEU Google account to continue.
+              Sign in using Google or your registered <strong>@neu.edu.ph</strong> account.
             </p>
 
-            <button onClick={handleLogin} style={styles.button}>
+            <button onClick={handleGoogleLogin} style={styles.googleButton}>
               Sign in with Google
             </button>
 
+            <div style={styles.divider}>or</div>
+
+            <form onSubmit={handleEmailLogin}>
+              <label style={styles.label}>NEU Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={styles.input}
+                placeholder="Enter your @neu.edu.ph email"
+                required
+              />
+
+              <label style={styles.label}>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={styles.input}
+                placeholder="Enter your password"
+                required
+              />
+
+              <button type="submit" style={styles.loginButton}>
+                Login
+              </button>
+            </form>
+
             <p style={styles.footerText}>
-              Only authorized institutional accounts are allowed.
+              No account yet?{" "}
+              <Link to="/register" style={styles.link}>
+                Register here
+              </Link>
             </p>
           </div>
         </div>
@@ -105,7 +156,7 @@ const styles: Record<string, CSSProperties> = {
   leftOverlay: {
     width: "100%",
     minHeight: "100%",
-    background: "linear-gradient(135deg, rgba(15,23,42,0.60), rgba(37,99,235,0.45))",
+    background: "linear-gradient(135deg, rgba(15,23,42,0.55), rgba(37,99,235,0.40))",
     padding: "56px 60px",
     color: "#ffffff",
     display: "flex",
@@ -187,24 +238,63 @@ const styles: Record<string, CSSProperties> = {
   cardText: {
     color: "#64748b",
     lineHeight: 1.7,
-    marginBottom: "30px",
-    fontSize: "19px",
+    marginBottom: "20px",
+    fontSize: "18px",
   },
-  button: {
+  googleButton: {
     width: "100%",
     background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
     color: "#ffffff",
     border: "none",
-    padding: "16px 22px",
+    padding: "14px 20px",
     borderRadius: "16px",
     cursor: "pointer",
-    fontSize: "20px",
+    fontSize: "18px",
     fontWeight: 800,
     boxShadow: "0 16px 28px rgba(37,99,235,0.26)",
   },
+  divider: {
+    textAlign: "center",
+    margin: "18px 0",
+    color: "#94a3b8",
+    fontWeight: 700,
+  },
+  label: {
+    display: "block",
+    marginBottom: "8px",
+    marginTop: "12px",
+    fontWeight: 700,
+    color: "#1e293b",
+    textAlign: "left",
+  },
+  input: {
+    width: "100%",
+    padding: "14px",
+    borderRadius: "14px",
+    border: "1px solid #cbd5e1",
+    background: "#f8fafc",
+    fontSize: "15px",
+  },
+  loginButton: {
+    width: "100%",
+    marginTop: "18px",
+    background: "#0f172a",
+    color: "#ffffff",
+    border: "none",
+    padding: "14px 20px",
+    borderRadius: "16px",
+    cursor: "pointer",
+    fontSize: "17px",
+    fontWeight: 800,
+  },
   footerText: {
     marginTop: "18px",
-    color: "#94a3b8",
+    color: "#64748b",
     fontSize: "14px",
+  },
+  link: {
+    color: "#2563eb",
+    fontWeight: 700,
+    textDecoration: "none",
   },
 };
