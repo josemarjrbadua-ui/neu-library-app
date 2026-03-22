@@ -1,6 +1,6 @@
 Both Visitor and Admin
 
-admin: jcesperanza@neu.edu.ph | Pass: 123456789
+admin: email@neu.edu.ph | Pass: 123456789
 
 user: gmail@neu.edu.ph | Pass: 112233
 
@@ -10,4 +10,4 @@ using their institutional email, specify their purpose for visiting, and check o
 organized and efficient flow of visitors while maintaining accurate records. On the administrative side, it provides tools to monitor real-time 
 occupancy, review and manage visit logs, handle user accounts, and post important announcements for library users.
 
-Live site: https://neu-library-app-dece3.web.app/
+Live site: https://neu-library-app-final-1705c.web.app/
